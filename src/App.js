@@ -38,6 +38,7 @@ const App = () => {
     <div className="cards-container">
       {cards.map((card) => (
         <Card
+          key={card.id}
           id={card.id}
           color={card.color}
           text={card.text}

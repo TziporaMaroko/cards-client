@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa"; 
 import style from "./Card.module.css";
 import http from "../../service/http.js"
+import ColorPicker from "../ColorPicker/ColorPucker.jsx";
+
 
 const colors = ["#FFA500", "#4CAF50", "#87CEFA", "#9370DB"]; // Array of colors for selection
 
@@ -14,27 +16,27 @@ const Card = ({ id, color, text, onDelete }) => {
     // Toggle editing mode
     const toggleEdit = () => setIsEditing(!isEditing);
 
-        // Handle text change
-        const handleTextChange = async (e) => {
-            const newText = e.target.value;
-            setCardText(newText);
-            try {
-                await http.put(`/cards/${id}`, { text: newText, color: cardColor });
-            } catch (error) {
-                console.error('Failed to update card text:', error);
-            }
-        };
-    
-        // Change color
-        const changeColor = async (newColor) => {
-            setCardColor(newColor);
-            setShowColorPicker(false);
-            try {
-                await http.put(`/cards/${id}`, { text: cardText, color: newColor });
-            } catch (error) {
-                console.error('Failed to update card color:', error);
-            }
-        };
+    // Handle text change
+    const handleTextChange = async (e) => {
+        const newText = e.target.value;
+        setCardText(newText);
+        try {
+            await http.put(`/cards/${id}`, { text: newText, color: cardColor });
+        } catch (error) {
+            console.error("Failed to update card text:", error);
+        }
+    };
+
+    // Change color
+    const changeColor = async (newColor) => {
+        setCardColor(newColor);
+        setShowColorPicker(false);
+        try {
+            await http.put(`/cards/${id}`, { text: cardText, color: newColor });
+        } catch (error) {
+            console.error("Failed to update card color:", error);
+        }
+    };
 
     return (
         <div className={style.card} style={{ backgroundColor: cardColor }}>
@@ -62,16 +64,7 @@ const Card = ({ id, color, text, onDelete }) => {
                 <FaTrash className={style.trashIcon} onClick={onDelete} />
 
                 {showColorPicker && (
-                    <div className={style.colorPicker}>
-                        {colors.map((colorOption) => (
-                            <div
-                                key={colorOption}
-                                className={style.colorOption}
-                                style={{ backgroundColor: colorOption }}
-                                onClick={() => changeColor(colorOption)}
-                            ></div>
-                        ))}
-                    </div>
+                    <ColorPicker colors={colors} onSelectColor={changeColor} />
                 )}
             </div>
         </div>
