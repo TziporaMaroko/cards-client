@@ -39,10 +39,10 @@ const Card = ({ id, color, text, onDelete, onUpdate }) => {
             rows={2}
           />
         ) : (
-          <Tooltip>
-            <span className={style.text} onClick={toggleEdit}>
+          <Tooltip text="Click to edit✏️">
+            <div className={style.text} onClick={toggleEdit}>
               {cardText}
-            </span>
+            </div>
           </Tooltip>
         )}
       </div>

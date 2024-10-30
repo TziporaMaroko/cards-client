@@ -1,60 +1,101 @@
 .card {
-    width: 200px;
-    height: 120px;
+    width: 220px;
+    height: 160px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     margin: 10px;
     position: relative; 
     color: white;
+    overflow: hidden;
 }
 
 .content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex: 1;
     margin: 10px;
+    min-height: 0;
+    position: relative;
+    display: flex; /* Add flex display */
+    flex-direction: column; /* Stack children vertically */
 }
 
 .bottom {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative; /* Allows color picker to align correctly */
+    padding: 5px 10px;
+    background: inherit; /* Ensures bottom bar matches card color */
 }
 
 .text {
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
+    flex: 1; /* Take up available space */
+    overflow-y: auto; /* Enable vertical scrolling */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding: 5px;
+    max-height: 80px; /* Set maximum height to ensure scrolling */
 }
 
-.textInput {
-    font-size: 18px;
-    font-weight: bold;
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: white;
-    outline: none;
+/* Apply the same scrollbar styling to .text as .textArea */
+.text::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.text::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.text::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.text::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
 }
 
 .textArea {
-    width: 100%;
+    width: 90%;
     padding: 5px;
     font-size: 16px;
     color: inherit;
     background: none;
     border: none;
-    resize: none; /* Prevents resizing */
+    resize: none;
     outline: none;
     font-family: inherit;
+    height: calc(100% - 10px);
+    overflow-y: auto;
 }
+
+.textArea::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.textArea::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.textArea::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.textArea::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
 .trashIcon {
     font-size: 20px;
     cursor: pointer;
-    margin: 10px;
+    padding: 10px;
 }
 
 .circle {
@@ -65,5 +106,3 @@
     cursor: pointer;
     margin: 10px;
 }
-
-
