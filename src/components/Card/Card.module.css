@@ -40,6 +40,17 @@
     outline: none;
 }
 
+.textArea {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    color: inherit;
+    background: none;
+    border: none;
+    resize: none; /* Prevents resizing */
+    outline: none;
+    font-family: inherit;
+}
 .trashIcon {
     font-size: 20px;
     cursor: pointer;
