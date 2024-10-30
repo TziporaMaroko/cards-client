@@ -2,6 +2,13 @@ body {
   background-color: #333;
 }
 
+.app-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
 .cards-container{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -9,4 +16,13 @@ body {
   padding: 20px;
   justify-items: center;
   height: 100vh;
+}
+
+.search-bar {
+  padding: 8px;
+  margin: 15px auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 300px;
 }

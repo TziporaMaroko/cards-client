@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { getCards, updateCard, deleteCard, addCard } from './service/cardsApiRequest.js';
 import Card from "./components/Card/Card.jsx";
 import PlusCard from "./components/PlusCard/PlusCard.jsx";
+import SearchBar from "./components/SearchBar/SearchBar.jsx";
 import './App.css';
 
 const App = () => {
   const [cards, setCards] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch cards on component mount
   useEffect(() => {
@@ -51,19 +53,27 @@ const App = () => {
     }
   };
 
+  // Filter cards based on search query
+  const filteredCards = cards.filter(card => 
+    card.text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="cards-container">
-      {cards.map(card => (
-        <Card
-          key={card.id}
-          id={card.id}
-          color={card.color}
-          text={card.text}
-          onUpdate={handleUpdateCard}
-          onDelete={() => handleDeleteCard(card.id)}
-        />
-      ))}
-      <PlusCard onCardAdded={handleCardAdded} />
+    <div className="app-container">
+      <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <div className="cards-container">
+        {filteredCards.map(card => (
+          <Card
+            key={card.id}
+            id={card.id}
+            color={card.color}
+            text={card.text}
+            onUpdate={handleUpdateCard}
+            onDelete={() => handleDeleteCard(card.id)}
+          />
+        ))}
+        <PlusCard onCardAdded={handleCardAdded} />
+      </div>
     </div>
   );
 };
