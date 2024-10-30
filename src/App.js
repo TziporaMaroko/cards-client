@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { getCards, updateCard, deleteCard, addCard } from './service/cardsApiRequest.js';
 import Card from "./components/Card/Card.jsx";
 import PlusCard from "./components/PlusCard/PlusCard.jsx";
 import './App.css';
-import http from './service/http.js';
 
 const App = () => {
   const [cards, setCards] = useState([]);
 
-  // Fetch cards from API on mount
+  // Fetch cards on component mount
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await http.get('/cards'); 
-        setCards(response.data); 
+        setCards(await getCards()); 
       } catch (error) {
         console.error('Failed to fetch cards:', error);
       }
@@ -20,43 +19,48 @@ const App = () => {
     fetchCards();
   }, []);
 
-  // Update a card (both locally and in API)
-  const updateCard = async (id, updatedData) => {
+  // Update card
+  const handleUpdateCard = async (id, updatedData) => {
     try {
-      await http.put(`/cards/${id}`, updatedData);
-      setCards((prevCards) =>
-        prevCards.map((card) => (card.id === id ? { ...card, ...updatedData } : card))
+      await updateCard(id, updatedData);
+      setCards(prevCards =>
+        prevCards.map(card => (card.id === id ? { ...card, ...updatedData } : card))
       );
     } catch (error) {
       console.error('Failed to update card:', error);
     }
   };
 
-  // Delete a card
-  const deleteCard = async (id) => {
+  // Delete card
+  const handleDeleteCard = async (id) => {
     try {
-      await http.delete(`/cards/${id}`);
-      setCards(cards.filter((card) => card.id !== id));
+      await deleteCard(id);
+      setCards(cards.filter(card => card.id !== id));
     } catch (error) {
       console.error('Failed to delete card:', error);
     }
   };
 
-  // Handle adding a new card
-  const handleCardAdded = (newCard) => {
-    setCards([...cards, newCard]);
+  // Add card
+  const handleCardAdded = async (newCard) => {
+    try {
+      const addedCard = await addCard(newCard);
+      setCards([...cards, addedCard]);
+    } catch (error) {
+      console.error('Failed to add card:', error);
+    }
   };
 
   return (
     <div className="cards-container">
-      {cards.map((card) => (
+      {cards.map(card => (
         <Card
           key={card.id}
           id={card.id}
           color={card.color}
           text={card.text}
-          onUpdate={updateCard}
-          onDelete={() => deleteCard(card.id)}
+          onUpdate={handleUpdateCard}
+          onDelete={() => handleDeleteCard(card.id)}
         />
       ))}
       <PlusCard onCardAdded={handleCardAdded} />

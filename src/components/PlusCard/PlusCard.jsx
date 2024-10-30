@@ -1,24 +1,15 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa"; 
 import style from "./PlusCard.module.css";
-import http from "../../service/http.js";
 
 const PlusCard = ({ onCardAdded }) => {
-    const handleAddCard = async () => {
+    const handleAddCard = () => {
         const defaultText = "New Card"; 
         const defaultColor = "#FFA500"; 
 
-        try {
-            const response = await http.post('/cards', {
-                text: defaultText,
-                color: defaultColor,
-            });
-
-            if (onCardAdded) {
-                onCardAdded(response.data); // Call a function to update the UI, if provided
-            }
-        } catch (error) {
-            console.error('Failed to add card:', error); 
+        // Call the provided onCardAdded function with default values
+        if (onCardAdded) {
+            onCardAdded({ text: defaultText, color: defaultColor });
         }
     };
 

@@ -14,16 +14,18 @@ const Card = ({ id, color, text, onDelete, onUpdate }) => {
 
   const toggleEdit = () => setIsEditing(!isEditing);
 
+  // Update text changes
   const handleTextChange = (e) => {
     const newText = e.target.value;
     setCardText(newText);
-    onUpdate(id, { text: newText, color: cardColor });
+    onUpdate(id, { text: newText, color: cardColor });//updates the server
   };
 
+  // Update color changes
   const changeColor = (newColor) => {
     setCardColor(newColor);
-    setShowColorPicker(false);
-    onUpdate(id, { text: cardText, color: newColor });
+    setShowColorPicker(false);//disables the color picker
+    onUpdate(id, { text: cardText, color: newColor });//updates the server
   };
 
   return (
@@ -39,7 +41,7 @@ const Card = ({ id, color, text, onDelete, onUpdate }) => {
             rows={2}
           />
         ) : (
-          <Tooltip text="Click to edit✏️">
+          <Tooltip whenClick={toggleEdit}>
             <div className={style.text} onClick={toggleEdit}>
               {cardText}
             </div>
@@ -50,10 +52,8 @@ const Card = ({ id, color, text, onDelete, onUpdate }) => {
         <div
           className={style.circle}
           onClick={() => setShowColorPicker(!showColorPicker)}
-        ></div>
-        
+        />
         <FaTrash className={style.trashIcon} onClick={onDelete} />
-
         {showColorPicker && (
           <ColorPicker colors={colors} onSelectColor={changeColor} />
         )}
