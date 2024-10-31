@@ -28,3 +28,15 @@ The Notes System is a web application that allows users to manage a collection o
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/cards-client.git
+2. Navigate to the project directory:
+   ```bash
+   cd cards-client
+3. Install the dependencies:
+   ```bash
+   npm install
+
+## Usage
+To start the application, run:
+   ```bash
+   npm start
+
