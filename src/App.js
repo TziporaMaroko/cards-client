@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getCards, updateCard, deleteCard, addCard } from './service/cardsApiRequest.js';
+import { getPinnedCardIds, addPinnedCard, removePinnedCard, isCardPinned } from './service/pinnedCardsUtil';
 import Card from "./components/Card/Card.jsx";
 import PlusCard from "./components/PlusCard/PlusCard.jsx";
 import SearchBar from "./components/SearchBar/SearchBar.jsx";
@@ -8,6 +9,7 @@ import './App.css';
 const App = () => {
   const [cards, setCards] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pinnedCardIds, setPinnedCardIds] = useState(getPinnedCardIds());
 
   // Fetch cards on component mount
   useEffect(() => {
@@ -20,6 +22,17 @@ const App = () => {
     };
     fetchCards();
   }, []);
+
+  // Toggle pinning
+  const handlePinToggle = (cardId) => {
+    if (isCardPinned(cardId)) {
+      removePinnedCard(cardId);
+      setPinnedCardIds(pinnedCardIds.filter(id => id !== cardId));
+    } else {
+      addPinnedCard(cardId);
+      setPinnedCardIds([...pinnedCardIds, cardId]);
+    }
+  };
 
   // Update card
   const handleUpdateCard = async (id, updatedData) => {
@@ -53,16 +66,23 @@ const App = () => {
     }
   };
 
-  // Filter cards based on search query
-  const filteredCards = cards.filter(card => 
-    card.text.toLowerCase().includes(searchQuery.toLowerCase())
+  // Filter and prioritize pinned cards based on search query
+  const filteredPinnedCards = cards.filter(card =>
+    isCardPinned(card.id) && card.text.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const filteredUnpinnedCards = cards.filter(card =>
+    !isCardPinned(card.id) && card.text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const combinedFilteredCards = [...filteredPinnedCards, ...filteredUnpinnedCards];
+
 
   return (
     <div className="app-container">
       <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       <div className="cards-container">
-        {filteredCards.map(card => (
+        {combinedFilteredCards.map(card => (
           <Card
             key={card.id}
             id={card.id}
@@ -70,6 +90,8 @@ const App = () => {
             text={card.text}
             onUpdate={handleUpdateCard}
             onDelete={() => handleDeleteCard(card.id)}
+            onPinToggle={() => handlePinToggle(card.id)} // Pass the pin toggle function
+            isPinned={pinnedCardIds.includes(card.id)} // Check if the card is pinned
           />
         ))}
         <PlusCard onCardAdded={handleCardAdded} />

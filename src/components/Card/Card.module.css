@@ -106,3 +106,16 @@
     cursor: pointer;
     margin: 10px;
 }
+.pinIcon {
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute; 
+    top: 8px; 
+    left: 8px; 
+    z-index: 1; 
+}
+
+.pinned {
+    box-shadow: 0 0 5px rgba(176, 196, 222, 0.5); 
+}
+  

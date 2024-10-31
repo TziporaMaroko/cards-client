@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa"; 
+import { TiPin, TiPinOutline } from "react-icons/ti"; 
 import style from "./Card.module.css";
 import ColorPicker from "../ColorPicker/ColorPicker.jsx";
 import Tooltip from "../Tooltip/Tooltip.jsx";
 
 const colors = ["#FFA500", "#4CAF50", "#87CEFA", "#9370DB"];
 
-const Card = ({ id, color, text, onDelete, onUpdate }) => {
+const Card = ({ id, color, text, onDelete, onUpdate, onPinToggle, isPinned }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [cardText, setCardText] = useState(text);
   const [cardColor, setCardColor] = useState(color);
@@ -29,7 +30,21 @@ const Card = ({ id, color, text, onDelete, onUpdate }) => {
   };
 
   return (
-    <div className={style.card} style={{ backgroundColor: cardColor }}>
+    <div className={`${style.card} ${isPinned ? style.pinned : ""}`} style={{ backgroundColor: cardColor }}>
+      {/* Pin icon positioned absolutely */}
+      {isPinned ? (
+        <TiPin 
+          className={`${style.pinIcon}`} 
+          color="white" // Use a neutral color for the pinned icon
+          onClick={() => onPinToggle(id)} 
+        />
+      ) : (
+        <TiPinOutline 
+          className={`${style.pinIcon}`} 
+          color="white" // Use a neutral color for the unpinned icon
+          onClick={() => onPinToggle(id)} 
+        />
+      )}
       <div className={style.content}>
         {isEditing ? (
           <textarea
@@ -59,7 +74,8 @@ const Card = ({ id, color, text, onDelete, onUpdate }) => {
         )}
       </div>
     </div>
-  );
+);
+
 };
 
 export default Card;
