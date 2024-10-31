@@ -8,7 +8,6 @@ A web application for managing notes through a card-based interface.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 The Notes System is a web application that allows users to manage a collection of notes, each represented as a card. Users can create, read, update, and delete notes, with features like localStorage synchronization and search functionality.
